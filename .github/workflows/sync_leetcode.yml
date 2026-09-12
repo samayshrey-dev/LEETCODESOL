@@ -19,3 +19,5 @@ jobs:
           destination-folder: solutions
           verbose: true
           commit-header: "[LeetCode Sync]"
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
