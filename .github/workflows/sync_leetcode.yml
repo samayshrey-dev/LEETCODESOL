@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Run LeetCode Synchronizer
-        uses: dos-m0nk3y/LeetCode-Synchronizer@v1.2.0
+        uses: javaarchive/LeetCode-Synchronizer@master
         with:
           GITHUB_TOKEN: ${{ github.token }}
           LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
