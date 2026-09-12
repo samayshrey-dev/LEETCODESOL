@@ -13,9 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run LeetCode Synchronizer
-        uses: javaarchive/LeetCode-Synchronizer@master
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          GITHUB_TOKEN: ${{ github.token }}
+          node-version: '18'
+
+      - name: Install leetcode-export
+        run: npm install -g leetcode-export
+
+      - name: Export LeetCode submissions
+        run: |
+          leetcode-export \
+            --cookie "LEETCODE_SESSION=${{ secrets.LEETCODE_SESSION }}" \
+            --out "leetcode"
+        env:
           LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
-          LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "github-actions[bot]"
+          git add leetcode/
+          git commit -m "Sync LeetCode solutions [bot]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
